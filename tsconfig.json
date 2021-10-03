@@ -27,6 +27,9 @@
       "@lazy/*" : [
         "src/app/lazy/*"
       ],
+      "@shared/*" : [
+        "src/app/shared/*"
+      ],
       "@environment": [
         "src/environments/environment"
       ]

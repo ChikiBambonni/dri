@@ -1,3 +1,4 @@
+import { IDictionary } from './../../../interfaces/dictionary.interfaces';
 import { UserRole } from '@core/enums';
 import { IUser } from '@core/interfaces';
 
@@ -30,17 +31,14 @@ const getRandomDate = (start: Date, end: Date): Date =>
   new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 
 const getRandomArrayItem = <T>(array: T[]) => {
-  const index = getRandomInteger(0, array.length);
+  const index = getRandomInteger(0, array.length - 1);
   return array[index];
 };
 
-const getRandomEnumValue = <T>(enumeration: T): T[keyof T] => {
-  const enumValues = Object.keys(enumeration)
-    .map((n) => Number.parseInt(n))
-    .filter((n) => !Number.isNaN(n)) as unknown as T[keyof T][];
-  const randomIndex = Math.floor(Math.random() * enumValues.length);
-  const randomEnumValue = enumValues[randomIndex];
-  return randomEnumValue;
+const getRandomEnumValue = <T>(enumeration: IDictionary<T>): T => {
+  const keys = Object.keys(enumeration);
+  const randomIndex = getRandomInteger(0, keys.length - 1);
+  return enumeration[keys[randomIndex]];
 };
 
 const generateMockUsers = (count: number): IUser[] =>
@@ -58,4 +56,4 @@ const generateMockUsers = (count: number): IUser[] =>
     };
   });
 
-export const mockUsers: IUser[] = generateMockUsers(100);
+export const mockUsers: IUser[] = generateMockUsers(500);

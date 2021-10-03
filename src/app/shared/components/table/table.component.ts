@@ -21,7 +21,7 @@ export class TableComponent implements OnInit {
   displayedColumns?: string[];
 
   @Input()
-  dataSource?: MatTableDataSource<any>;
+  dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
   @Output()
   rowClick: EventEmitter<any> = new EventEmitter<any>();

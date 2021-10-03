@@ -18,14 +18,14 @@ import {
 export class AppRepository extends BaseApi implements IAppRepository {
   private usersUrl = `${environment.api}/users`;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private http: HttpClient) {
     super();
   }
 
   getUsers(
     options: IPaginationOptions
   ): Observable<IComponentResponse<IPaginationInterface<IUser>>> {
-    return this.httpClient
+    return this.http
       .get<IPaginationInterface<IUser>>(this.usersUrl, {
         params: this.getRequestParams(
           options as unknown as IDictionary<string>

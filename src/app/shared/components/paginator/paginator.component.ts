@@ -23,7 +23,7 @@ export class PaginatorComponent implements OnInit {
   pageSize?: number;
 
   @Input()
-  pageSizeOptions?: number[];
+  pageSizeOptions: number[] = [];
 
   @Output()
   page: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
