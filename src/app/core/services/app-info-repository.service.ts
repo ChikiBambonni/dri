@@ -38,4 +38,13 @@ export class AppRepository extends BaseApi implements IAppRepository {
         )
       );
   }
+
+  getUser(userId: string): Observable<IComponentResponse<IUser>> {
+    return this.http.get<IUser>(`${this.usersUrl}/${userId}`).pipe(
+      map((res: IUser) => this.getSuccessBody(res))
+      // catchError((error: HttpErrorResponse) =>
+      //   of(this.getErrorBody<IUser>(error))
+      // )
+    );
+  }
 }

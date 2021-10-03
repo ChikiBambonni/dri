@@ -30,12 +30,10 @@ export class MockDataInterceptor implements HttpInterceptor {
       if (entity) {
         const params = entity.pattern.match(req.url);
 
-        const requestParams = isEmptyObj(params)
-          ? this.getParams(req)
-          : {
-              queryParams: this.getParams(req),
-              params,
-            };
+        const requestParams = {
+          queryParams: this.getParams(req),
+          params,
+        };
 
         return of(
           new HttpResponse({
@@ -51,10 +49,8 @@ export class MockDataInterceptor implements HttpInterceptor {
 
   private getParams(clone: HttpRequest<any>) {
     const params: IDictionary<string> = {};
-
-    clone.params['map'].forEach(
-      (value: any, key: any) => (params[key] = value[0])
-    );
+    const cloneParams = clone.params['map'];
+    cloneParams?.forEach((value: any, key: any) => (params[key] = value[0]));
     return params;
   }
 }

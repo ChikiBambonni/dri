@@ -1,3 +1,5 @@
+import { IDictionary } from './dictionary.interfaces';
+
 export interface IBackendHttpError {
   error: string;
   message: string;
@@ -15,4 +17,9 @@ export interface IErrorResponse {
 export interface IComponentResponse<T> {
   error: IErrorResponse | null;
   value: T | null;
+}
+
+export interface IRequestParams {
+  queryParams: IDictionary<string>;
+  params: IDictionary<string>;
 }

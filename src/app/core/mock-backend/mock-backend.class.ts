@@ -1,17 +1,21 @@
-import { IPaginationInterface, IPaginationOptions } from '@core/interfaces';
+import { IPaginationInterface, IRequestParams } from '@core/interfaces';
 
 export abstract class MockBackendFactory<T> {
   abstract getData(
-    options: IPaginationOptions
-  ): T | T[] | IPaginationInterface<T>;
+    params: IRequestParams
+  ): T | T[] | IPaginationInterface<T> | undefined;
 
   constructor(private items: T[]) {}
 
-  protected getTableData(options: IPaginationOptions): IPaginationInterface<T> {
-    const pagesize: number = this.getPageSize(options.pagesize);
-    const page: number = this.getPageNumber(options.page);
+  protected find(functor: (value: T) => boolean): T | undefined {
+    return this.items.find(functor);
+  }
 
-    const offset: number = (page - 1) * pagesize;
+  protected getTableData(params: IRequestParams): IPaginationInterface<T> {
+    const pagesize = this.getPageSize(+params.queryParams.pagesize);
+    const page = this.getPageNumber(+params.queryParams.page);
+
+    const offset = (page - 1) * pagesize;
     const offsetElements = this.items.slice(offset, offset + Number(pagesize));
 
     return {

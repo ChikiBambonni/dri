@@ -1,0 +1,21 @@
+:host {
+  display: block;
+  height: 100%;
+  width: 100%;
+
+  .user-details {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+
+    .header {
+      &-image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}

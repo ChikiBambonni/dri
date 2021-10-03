@@ -4,6 +4,7 @@
     <app-table
       [dataColumns]="dataColumns"
       [dataSource]="dataSource"
+      (rowClick)="onRowClick($event)"
       (addRow)="onAddRow($event)"
       (deleteRow)="onDeleteRow($event)"
       (editRow)="onEditRow($event)"
