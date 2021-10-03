@@ -19,7 +19,18 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@core/*" : [
+        "src/app/core/*"
+      ],
+      "@lazy/*" : [
+        "src/app/lazy/*"
+      ],
+      "@environment": [
+        "src/environments/environment"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
