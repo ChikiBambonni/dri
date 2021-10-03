@@ -1,12 +1,34 @@
 <div #tableDiv class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource">
-
-    <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+    <ng-container *ngFor="let column of dataColumns" [matColumnDef]="column">
       <th mat-header-cell *matHeaderCellDef disableClear>{{ column }}</th>
-      <td mat-cell class="header-align-right" *matCellDef="let element; let i = index;">{{ element[column] }} </td>
+      <td
+        mat-cell
+        class="header-align-right"
+        *matCellDef="let element; let i = index"
+      >
+        {{ element[column] }}
+      </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="rowHandler(row)"></tr>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element" class="action-link">
+        <ng-container *ngFor="let action of actions">
+          <fa-icon
+            [icon]="action.icon"
+            [title]="action.title"
+            (click)="action.callback(element)"
+          ></fa-icon>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: columns"
+      (click)="rowHandler(row)"
+    ></tr>
   </table>
 </div>

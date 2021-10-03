@@ -10,6 +10,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataComponent } from '@core/utils';
 import { AppRepository } from '@core/services';
+import { IDictionary } from '@core/interfaces';
 import { PaginatorComponent } from '@shared/components/paginator/paginator.component';
 
 import { DEFAULT_PAGE } from './users.constants';
@@ -26,7 +27,7 @@ export class UsersComponent extends DataComponent implements OnInit {
 
   page: PageEvent = DEFAULT_PAGE;
 
-  displayedColumns?: string[];
+  dataColumns = ['id', 'email', 'role'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
   constructor(
@@ -40,10 +41,22 @@ export class UsersComponent extends DataComponent implements OnInit {
     this.fetchData(this.page);
   }
 
-  changePage($event: PageEvent) {
+  onChangePage($event: PageEvent) {
     this.page = $event;
     this.isLoading = true;
     this.fetchData(this.page);
+  }
+
+  onAddRow($event: IDictionary<any>): void {
+    console.log('onAddRow', $event);
+  }
+
+  onDeleteRow($event: IDictionary<any>): void {
+    console.log('onDeleteRow', $event);
+  }
+
+  onEditRow($event: IDictionary<any>): void {
+    console.log('onEditRow', $event);
   }
 
   private fetchData(page: PageEvent): void {
@@ -64,8 +77,7 @@ export class UsersComponent extends DataComponent implements OnInit {
         const { elements, totalElements } = response.value!;
 
         this.dataSource.data = elements;
-        this.page.length = totalElements!;
-        this.displayedColumns = Object.keys(elements[0] ?? {});
+        this.page.length = totalElements ?? 0;
         this.cd.markForCheck();
       });
   }

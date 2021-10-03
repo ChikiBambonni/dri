@@ -1,14 +1,20 @@
 <div class="users-table">
   <mat-card class="table-card">
     <app-spinner *ngIf="isLoading"></app-spinner>
-    <app-table [displayedColumns]="displayedColumns" [dataSource]="dataSource">
+    <app-table
+      [dataColumns]="dataColumns"
+      [dataSource]="dataSource"
+      (addRow)="onAddRow($event)"
+      (deleteRow)="onDeleteRow($event)"
+      (editRow)="onEditRow($event)"
+    >
     </app-table>
     <app-paginator
       #paginator
       [length]="page.length"
       [pageSize]="page.pageSize"
       [pageSizeOptions]="[5, 10, 15, 20]"
-      (page)="changePage($event)"
+      (page)="onChangePage($event)"
     >
     </app-paginator>
   </mat-card>
