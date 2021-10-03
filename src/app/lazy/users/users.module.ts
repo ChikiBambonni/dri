@@ -6,6 +6,8 @@ import {
   SpinnerModule,
   PaginatorModule,
 } from '@shared/components';
+import { UsersRepository } from '@core/abstractions';
+import { UsersService } from '@core/services';
 
 import { UsersComponent } from './users.component';
 import { UsersRoutingModule } from './users-routing.module';
@@ -20,6 +22,12 @@ import { UsersRoutingModule } from './users-routing.module';
     PaginatorModule,
   ],
   declarations: [UsersComponent],
+  providers: [
+    {
+      provide: UsersRepository,
+      useClass: UsersService,
+    },
+  ],
   exports: [UsersComponent],
 })
 export class UsersModule {}

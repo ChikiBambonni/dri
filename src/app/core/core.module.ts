@@ -7,13 +7,13 @@ import { RouterModule } from '@angular/router';
 import { MockDataInterceptor } from './mock-backend/mock-data.interceptor';
 import { MockBackendService } from './mock-backend/mock-backend.service';
 import { MockBackendConfig } from './mock-backend/mock-backend-config.constant';
-import { AppRepository } from './services/app-info-repository.service';
+import { UsersHttpService } from './services/users-http.service';
 
 @NgModule({
   imports: [CommonModule, FormsModule, HttpClientModule, RouterModule],
   exports: [],
   providers: [
-    AppRepository,
+    UsersHttpService,
     MockBackendService,
     {
       provide: HTTP_INTERCEPTORS,

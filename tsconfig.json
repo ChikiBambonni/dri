@@ -30,6 +30,9 @@
       "@shared/*" : [
         "src/app/shared/*"
       ],
+      "@store/*" : [
+        "src/app/store/*"
+      ],
       "@environment": [
         "src/environments/environment"
       ]

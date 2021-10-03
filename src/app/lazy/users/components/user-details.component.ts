@@ -4,12 +4,14 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
+import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { AppRepository } from '@core/services';
 import { DataComponent } from '@core/utils';
 import { IUser } from '@core/interfaces';
-import { filter, tap } from 'rxjs/operators';
+import { UsersRepository } from '@core/abstractions';
+import { TakeUntilDestroy } from '@core/decorators';
 
 @Component({
   selector: 'app-user-details',
@@ -17,16 +19,19 @@ import { filter, tap } from 'rxjs/operators';
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.scss'],
 })
+@TakeUntilDestroy
 export class UserDetailsComponent extends DataComponent implements OnInit {
   readonly faUser = faUser;
 
   user?: IUser;
 
+  private componentDestroy!: () => Observable<any>;
+
   constructor(
     private router: Router,
     private cd: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private repository: AppRepository
+    private repository: UsersRepository
   ) {
     super();
   }
@@ -35,19 +40,14 @@ export class UserDetailsComponent extends DataComponent implements OnInit {
     const userId = this.route.snapshot.paramMap.get('id');
     if (userId) {
       this.repository
-        .getUser(userId)
-        .pipe(
-          tap((response) => {
-            this.isLoading = false;
-            this.error = response.error;
-            this.cd.markForCheck();
-          }),
-          filter((response) => !response.error)
-        )
-        .subscribe((response) => {
-          this.user = response.value!;
+        .get(userId)
+        .pipe(takeUntil(this.componentDestroy()))
+        .subscribe((user) => {
+          this.user = user;
           this.cd.markForCheck();
         });
+
+      this.repository.fetch(userId);
     }
   }
 

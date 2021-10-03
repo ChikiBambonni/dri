@@ -5,6 +5,6 @@ export interface IPaginationOptions {
   totalElements?: number;
 }
 
-export interface IPaginationInterface<T> extends IPaginationOptions {
+export interface IPagination<T> extends IPaginationOptions {
   elements: T[];
 }

@@ -2,16 +2,19 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { filter, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataComponent } from '@core/utils';
-import { AppRepository } from '@core/services';
 import { IDictionary, IUser } from '@core/interfaces';
+import { UsersRepository } from '@core/abstractions';
+import { TakeUntilDestroy } from '@core/decorators';
 import { PaginatorComponent } from '@shared/components/paginator/paginator.component';
 
 import { DEFAULT_PAGE } from './users.constants';
@@ -22,7 +25,8 @@ import { DEFAULT_PAGE } from './users.constants';
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
 })
-export class UsersComponent extends DataComponent implements OnInit {
+@TakeUntilDestroy
+export class UsersComponent extends DataComponent implements OnInit, OnDestroy {
   @ViewChild('paginator')
   paginatorComponent?: PaginatorComponent;
 
@@ -31,17 +35,22 @@ export class UsersComponent extends DataComponent implements OnInit {
   dataColumns = ['id', 'email', 'role'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
+  private componentDestroy!: () => Observable<any>;
+
   constructor(
     private router: Router,
     private cd: ChangeDetectorRef,
-    private repository: AppRepository
+    private repository: UsersRepository
   ) {
     super();
   }
 
   ngOnInit(): void {
     this.fetchData(this.page);
+    this.subscribeToDataChange();
   }
+
+  ngOnDestroy(): void {}
 
   onChangePage($event: PageEvent) {
     this.page = $event;
@@ -50,7 +59,6 @@ export class UsersComponent extends DataComponent implements OnInit {
   }
 
   onRowClick($event: IUser): void {
-    console.log($event);
     const { id } = $event;
     this.router.navigate(['/users', id]);
   }
@@ -68,24 +76,34 @@ export class UsersComponent extends DataComponent implements OnInit {
   }
 
   private fetchData(page: PageEvent): void {
-    this.repository
-      .getUsers({
-        pagesize: page.pageSize,
-        page: page.pageIndex + 1,
-      })
-      .pipe(
-        tap((response) => {
-          this.isLoading = false;
-          this.error = response.error;
-          this.cd.markForCheck();
-        }),
-        filter((response) => !response.error)
-      )
-      .subscribe((response) => {
-        const { elements, totalElements } = response.value!;
+    this.repository.fetchAll({
+      pagesize: page.pageSize,
+      page: page.pageIndex + 1,
+    });
+  }
 
-        this.dataSource.data = elements;
-        this.page.length = totalElements ?? 0;
+  private subscribeToDataChange(): void {
+    this.repository
+      .getAll()
+      .pipe(takeUntil(this.componentDestroy()))
+      .subscribe((users) => {
+        this.dataSource.data = users;
+        this.cd.markForCheck();
+      });
+
+    this.repository
+      .getLoadingAll()
+      .pipe(takeUntil(this.componentDestroy()))
+      .subscribe((isLoading) => {
+        this.isLoading = isLoading;
+        this.cd.markForCheck();
+      });
+
+    this.repository
+      .getCount()
+      .pipe(takeUntil(this.componentDestroy()))
+      .subscribe((count) => {
+        this.page.length = count;
         this.cd.markForCheck();
       });
   }

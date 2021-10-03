@@ -1,9 +1,9 @@
-import { IPaginationInterface, IRequestParams } from '@core/interfaces';
+import { IPagination, IRequestParams } from '@core/interfaces';
 
 export abstract class MockBackendFactory<T> {
   abstract getData(
     params: IRequestParams
-  ): T | T[] | IPaginationInterface<T> | undefined;
+  ): T | T[] | IPagination<T> | undefined;
 
   constructor(private items: T[]) {}
 
@@ -11,7 +11,7 @@ export abstract class MockBackendFactory<T> {
     return this.items.find(functor);
   }
 
-  protected getTableData(params: IRequestParams): IPaginationInterface<T> {
+  protected getTableData(params: IRequestParams): IPagination<T> {
     const pagesize = this.getPageSize(+params.queryParams.pagesize);
     const page = this.getPageNumber(+params.queryParams.page);
 

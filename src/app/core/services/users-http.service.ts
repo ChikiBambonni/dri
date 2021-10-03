@@ -7,15 +7,15 @@ import { environment } from '@environment';
 import { BaseApi } from '@core/utils';
 import {
   IUser,
-  IAppRepository,
   IPaginationOptions,
   IComponentResponse,
-  IPaginationInterface,
+  IPagination,
   IDictionary,
+  IUsersHttp,
 } from '@core/interfaces';
 
 @Injectable()
-export class AppRepository extends BaseApi implements IAppRepository {
+export class UsersHttpService extends BaseApi implements IUsersHttp {
   private usersUrl = `${environment.api}/users`;
 
   constructor(private http: HttpClient) {
@@ -24,27 +24,27 @@ export class AppRepository extends BaseApi implements IAppRepository {
 
   getUsers(
     options: IPaginationOptions
-  ): Observable<IComponentResponse<IPaginationInterface<IUser>>> {
+  ): Observable<IComponentResponse<IPagination<IUser>>> {
     return this.http
-      .get<IPaginationInterface<IUser>>(this.usersUrl, {
+      .get<IPagination<IUser>>(this.usersUrl, {
         params: this.getRequestParams(
           options as unknown as IDictionary<string>
         ),
       })
       .pipe(
-        map((res: IPaginationInterface<IUser>) => this.getSuccessBody(res)),
+        map((res: IPagination<IUser>) => this.getSuccessBody(res)),
         catchError((error: HttpErrorResponse) =>
-          of(this.getErrorBody<IPaginationInterface<IUser>>(error))
+          of(this.getErrorBody<IPagination<IUser>>(error))
         )
       );
   }
 
   getUser(userId: string): Observable<IComponentResponse<IUser>> {
     return this.http.get<IUser>(`${this.usersUrl}/${userId}`).pipe(
-      map((res: IUser) => this.getSuccessBody(res))
-      // catchError((error: HttpErrorResponse) =>
-      //   of(this.getErrorBody<IUser>(error))
-      // )
+      map((res: IUser) => this.getSuccessBody(res)),
+      catchError((error: HttpErrorResponse) =>
+        of(this.getErrorBody<IUser>(error))
+      )
     );
   }
 }

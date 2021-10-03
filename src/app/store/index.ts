@@ -3,9 +3,9 @@ import { ActionReducerMap } from '@ngrx/store';
 import * as fromUsers from './users';
 
 export interface AppState {
-  app: fromUsers.State;
+  users: fromUsers.State;
 }
 
 export const appReducers: ActionReducerMap<AppState> = {
-  app: fromUsers.reducer,
+  users: fromUsers.reducer,
 };
