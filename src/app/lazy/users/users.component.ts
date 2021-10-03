@@ -63,16 +63,17 @@ export class UsersComponent extends DataComponent implements OnInit, OnDestroy {
     this.router.navigate(['/users', id]);
   }
 
-  onAddRow($event: IDictionary<any>): void {
-    console.log('onAddRow', $event);
-  }
+  onAddRow($event: IDictionary<any>): void {}
 
   onDeleteRow($event: IDictionary<any>): void {
-    console.log('onDeleteRow', $event);
+    const id: string = $event.id;
+    this.repository.remove(id);
   }
 
   onEditRow($event: IDictionary<any>): void {
-    console.log('onEditRow', $event);
+    const id: string = $event.id;
+    const user = $event as IUser;
+    this.repository.update(id, user);
   }
 
   private fetchData(page: PageEvent): void {

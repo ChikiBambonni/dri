@@ -11,6 +11,8 @@ import {
   fetchUsers,
   selectTotalUsers,
   fetchUser,
+  removeUser,
+  updateUser,
 } from '@store/users';
 
 @Injectable()
@@ -43,5 +45,13 @@ export class UsersService extends UsersRepository {
 
   get(id: string): Observable<IUser | undefined> {
     return this.appStore.select(selectUserById(+id));
+  }
+
+  remove(userId: string): void {
+    this.appStore.dispatch(removeUser({ userId }));
+  }
+
+  update(userId: string, user: IUser): void {
+    this.appStore.dispatch(updateUser({ userId, user }));
   }
 }

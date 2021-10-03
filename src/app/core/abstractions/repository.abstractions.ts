@@ -9,6 +9,8 @@ export abstract class Repository<T> {
 
   abstract fetch(id: string): void;
   abstract get(id: string): Observable<T | undefined>;
+  abstract remove(id: string): void;
+  abstract update(id: string, item: T): void;
 }
 
 export abstract class UsersRepository extends Repository<IUser> {}

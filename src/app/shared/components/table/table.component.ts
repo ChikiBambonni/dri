@@ -117,9 +117,7 @@ export class TableComponent implements OnInit, OnChanges {
       })),
     };
 
-    this.openUpdateDialog(data).subscribe((res) => {
-      console.log(res);
-    });
+    this.openUpdateDialog(data).subscribe((res) => {});
   }
 
   private editRowCallback(element: IDictionary<any>): void {
@@ -134,11 +132,22 @@ export class TableComponent implements OnInit, OnChanges {
     };
 
     this.openUpdateDialog(data).subscribe((res) => {
-      console.log(res);
+      const data = this.getData(res as IUpdateDialogData);
+      this.editRow.emit(data);
     });
   }
 
   private deleteRowCallback(element: IDictionary<any>): void {
     this.deleteRow.emit(element);
+  }
+
+  private getData(dialogData: IUpdateDialogData): IDictionary<any> {
+    return dialogData.columns.reduce<IDictionary<any>>(
+      (acc, curr) => ({
+        ...acc,
+        [curr.label]: curr.value,
+      }),
+      {}
+    );
   }
 }

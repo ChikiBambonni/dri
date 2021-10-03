@@ -22,3 +22,13 @@ export const setUser = createAction(
   `${ENTITY} Set user`,
   props<{ user: IUser }>()
 );
+
+export const removeUser = createAction(
+  `${ENTITY} Remove user`,
+  props<{ userId: string }>()
+);
+
+export const updateUser = createAction(
+  `${ENTITY} Update user`,
+  props<{ userId: string; user: IUser }>()
+);

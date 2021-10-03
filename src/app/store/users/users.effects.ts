@@ -36,6 +36,9 @@ export class UsersEffects {
     )
   );
 
+  // Here we can add effects for https calls for update/delete,
+  // but let's keep data just in memory right now
+
   constructor(
     private actions$: Actions,
     private usersHttpService: UsersHttpService
