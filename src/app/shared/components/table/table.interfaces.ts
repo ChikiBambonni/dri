@@ -4,5 +4,5 @@ import { IDictionary } from '@core/interfaces';
 export interface ITableAction {
   title: string;
   icon: IconDefinition;
-  callback: (element: IDictionary<any>) => void;
+  callback: ($event: MouseEvent, element: IDictionary<any>) => void;
 }

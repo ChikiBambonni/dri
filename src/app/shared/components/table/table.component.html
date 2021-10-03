@@ -18,7 +18,7 @@
           <fa-icon
             [icon]="action.icon"
             [title]="action.title"
-            (click)="action.callback(element)"
+            (click)="action.callback($event, element)"
           ></fa-icon>
         </ng-container>
       </td>
@@ -28,7 +28,9 @@
     <tr
       mat-row
       *matRowDef="let row; columns: columns"
-      (click)="rowHandler(row)"
-    ></tr>
+      (click)="onRowClick(row)"
+    >
+      kek
+    </tr>
   </table>
 </div>

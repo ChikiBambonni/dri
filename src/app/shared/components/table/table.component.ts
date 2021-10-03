@@ -61,17 +61,26 @@ export class TableComponent implements OnInit, OnChanges {
     {
       title: 'Add',
       icon: faPlusSquare,
-      callback: (element) => this.addRowCallback(element),
+      callback: ($event, element) => {
+        $event.stopPropagation();
+        this.addRowCallback(element);
+      },
     },
     {
       title: 'Delete',
       icon: faTrash,
-      callback: (element) => this.deleteRowCallback(element),
+      callback: ($event, element) => {
+        $event.stopPropagation();
+        this.deleteRowCallback(element);
+      },
     },
     {
       title: 'Edit',
       icon: faEdit,
-      callback: (element) => this.editRowCallback(element),
+      callback: ($event, element) => {
+        $event.stopPropagation();
+        this.editRowCallback(element);
+      },
     },
   ];
 
@@ -82,7 +91,7 @@ export class TableComponent implements OnInit, OnChanges {
   @TrackChanges('dataColumns', 'setTableColumns')
   ngOnChanges() {}
 
-  rowHandler(row: any) {
+  onRowClick(row: IDictionary<any>) {
     this.rowClick.emit(row);
   }
 

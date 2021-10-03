@@ -50,6 +50,7 @@ export class UsersComponent extends DataComponent implements OnInit {
   }
 
   onRowClick($event: IUser): void {
+    console.log($event);
     const { id } = $event;
     this.router.navigate(['/users', id]);
   }
