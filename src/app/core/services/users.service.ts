@@ -16,6 +16,11 @@ import {
   addNewUser,
 } from '@store/users';
 
+/**
+ * UsersService which uses Redux for state management,
+ * if we want to switch from Redux to another lib just
+ * {extends UsersRepository} and implement all required methods
+ */
 @Injectable()
 export class UsersService extends UsersRepository {
   constructor(private appStore: Store<State>) {
