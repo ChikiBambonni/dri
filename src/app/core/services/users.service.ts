@@ -13,6 +13,7 @@ import {
   fetchUser,
   removeUser,
   updateUser,
+  addNewUser,
 } from '@store/users';
 
 @Injectable()
@@ -53,5 +54,9 @@ export class UsersService extends UsersRepository {
 
   update(userId: string, user: IUser): void {
     this.appStore.dispatch(updateUser({ userId, user }));
+  }
+
+  add(user: IUser): void {
+    this.appStore.dispatch(addNewUser({ user }));
   }
 }

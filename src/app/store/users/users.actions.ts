@@ -32,3 +32,8 @@ export const updateUser = createAction(
   `${ENTITY} Update user`,
   props<{ userId: string; user: IUser }>()
 );
+
+export const addNewUser = createAction(
+  `${ENTITY} Add new user`,
+  props<{ user: IUser }>()
+);

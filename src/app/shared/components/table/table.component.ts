@@ -117,7 +117,10 @@ export class TableComponent implements OnInit, OnChanges {
       })),
     };
 
-    this.openUpdateDialog(data).subscribe((res) => {});
+    this.openUpdateDialog(data).subscribe((res) => {
+      const data = this.getData(res as IUpdateDialogData);
+      this.addRow.emit(data);
+    });
   }
 
   private editRowCallback(element: IDictionary<any>): void {

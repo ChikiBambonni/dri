@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  OnDestroy,
   OnInit,
 } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -20,7 +21,10 @@ import { TakeUntilDestroy } from '@core/decorators';
   styleUrls: ['./user-details.component.scss'],
 })
 @TakeUntilDestroy
-export class UserDetailsComponent extends DataComponent implements OnInit {
+export class UserDetailsComponent
+  extends DataComponent
+  implements OnInit, OnDestroy
+{
   readonly faUser = faUser;
 
   user?: IUser;
@@ -50,6 +54,8 @@ export class UserDetailsComponent extends DataComponent implements OnInit {
       this.repository.fetch(userId);
     }
   }
+
+  ngOnDestroy(): void {}
 
   onBackClick(): void {
     this.router.navigate(['users']);

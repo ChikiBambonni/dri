@@ -11,6 +11,7 @@ export abstract class Repository<T> {
   abstract get(id: string): Observable<T | undefined>;
   abstract remove(id: string): void;
   abstract update(id: string, item: T): void;
+  abstract add(item: T): void;
 }
 
 export abstract class UsersRepository extends Repository<IUser> {}

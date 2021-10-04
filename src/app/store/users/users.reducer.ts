@@ -2,6 +2,7 @@ import { Action, createReducer, on } from '@ngrx/store';
 import { IUser } from '@core/interfaces';
 
 import {
+  addNewUser,
   fetchUsers,
   removeUser,
   setUser,
@@ -50,6 +51,10 @@ const usersReducer = createReducer(
   on(updateUser, (state, { userId, user }) => ({
     ...state,
     users: state.users.map((u) => (u.id === +userId ? user : u)),
+  })),
+  on(addNewUser, (state, { user }) => ({
+    ...state,
+    users: [...state.users, user],
   }))
 );
 
