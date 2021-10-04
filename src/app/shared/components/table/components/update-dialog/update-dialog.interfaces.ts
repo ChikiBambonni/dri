@@ -1,5 +1,8 @@
 import { UpdateDialogType } from './update-dialog.enums';
 
+/**
+ * To extend this functionality we should add validations as well
+ */
 export interface IColumnDescriptor {
   label: string;
   type: 'text' | 'number';
